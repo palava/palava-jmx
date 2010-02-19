@@ -1,6 +1,6 @@
 /**
  * palava - a java-php-bridge
- * Copyright (C) 2007  CosmoCode GmbH
+ * Copyright (C) 2007-2010  CosmoCode GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,37 +19,41 @@
 
 package de.cosmocode.palava.jmx;
 
+import javax.management.InstanceNotFoundException;
+import javax.management.JMException;
+import javax.management.MBeanRegistrationException;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
 import com.google.inject.Inject;
-import de.cosmocode.palava.core.Service;
+
 import de.cosmocode.palava.core.lifecycle.Disposable;
 import de.cosmocode.palava.core.lifecycle.LifecycleException;
 
-import javax.management.*;
-
 public class JmxObject implements Disposable, JmxObjectMBean {
-	private ObjectName mBeanName;
-	private MBeanServer mBeanServer;
+    
+    private ObjectName mBeanName;
+    private MBeanServer mBeanServer;
 
-	@Inject
-	public JmxObject(MBeanServerProvider mBeanServerProvider) throws MalformedObjectNameException, MBeanRegistrationException, InstanceAlreadyExistsException, NotCompliantMBeanException {
-		mBeanName = new ObjectName("de.cosmocode.jmx:type=JmxTest");
-		mBeanServer = mBeanServerProvider.getMBeanServer();
+    @Inject
+    public JmxObject(MBeanServer mBeanServer) throws JMException {
+        mBeanName = new ObjectName("de.cosmocode.palava.jmx:type=JmxTest");
+        this.mBeanServer = mBeanServer;
+        mBeanServer.registerMBean(this, mBeanName);
+    }
 
-		mBeanServer.registerMBean(this, mBeanName);
-	}
+    public String getWorld() {
+        return "Hello World!";
+    }
 
-	public String getWorld() {
-		return "Hello World!";
-	}
-
-	@Override
-	public void dispose() throws LifecycleException {
-		try {
-			mBeanServer.unregisterMBean(mBeanName);
-		} catch (InstanceNotFoundException e) {
-			throw new LifecycleException(e);
-		} catch (MBeanRegistrationException e) {
-			throw new LifecycleException(e);
-		}
-	}
+    @Override
+    public void dispose() throws LifecycleException {
+        try {
+            mBeanServer.unregisterMBean(mBeanName);
+        } catch (InstanceNotFoundException e) {
+            throw new LifecycleException(e);
+        } catch (MBeanRegistrationException e) {
+            throw new LifecycleException(e);
+        }
+    }
 }

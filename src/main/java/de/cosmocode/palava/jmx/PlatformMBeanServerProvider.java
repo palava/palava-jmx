@@ -1,6 +1,6 @@
 /**
  * palava - a java-php-bridge
- * Copyright (C) 2007  CosmoCode GmbH
+ * Copyright (C) 2007-2010  CosmoCode GmbH
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,13 +19,25 @@
 
 package de.cosmocode.palava.jmx;
 
+import java.lang.management.ManagementFactory;
+
 import javax.management.MBeanServer;
 
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
 /**
- * Common interface to access an active MBeanServer.
+ * Implements the {@link MBeanServerProvider} with the default system MBeanServer.
  *
  * @author Tobias Sarnowski
+ * @author Willi Schoenborn
  */
-public interface MBeanServerProvider {
-	MBeanServer getMBeanServer();
+@Singleton
+final class PlatformMBeanServerProvider implements Provider<MBeanServer> {
+    
+    @Override
+    public MBeanServer get() {
+        return ManagementFactory.getPlatformMBeanServer();
+    }
+    
 }
