@@ -19,17 +19,17 @@
 
 package de.cosmocode.palava.jmx;
 
-import de.cosmocode.palava.core.RegistryModule;
-import de.cosmocode.palava.core.ServiceModule;
+import com.google.inject.Binder;
+import com.google.inject.Module;
 
-public class SystemJmxTestApplication extends ServiceModule {
+import de.cosmocode.palava.core.RegistryModule;
+
+public class SystemJmxTestApplication implements Module {
 
     @Override
-    protected void configure() {
-        install(new RegistryModule());
-        install(new PlatformJmxModule());
-
-        serve(JmxObject.class);
+    public void configure(Binder binder) {
+        binder.install(new RegistryModule());
+        binder.install(new PlatformJmxModule());
     }
 
 }
