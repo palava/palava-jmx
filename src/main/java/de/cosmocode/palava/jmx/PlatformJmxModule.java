@@ -19,10 +19,13 @@
 
 package de.cosmocode.palava.jmx;
 
+import java.lang.management.ManagementFactory;
+
 import javax.management.MBeanServer;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
+import com.google.inject.Provides;
 
 /**
  * A {@link Module} for the {@link de.cosmocode.palava.jmx} package.
@@ -33,7 +36,12 @@ public final class PlatformJmxModule implements Module {
 
     @Override
     public void configure(Binder binder) {
-        binder.bind(MBeanServer.class).toProvider(PlatformMBeanServerProvider.class).asEagerSingleton();
+        
     }
 
+    @Provides
+    MBeanServer getMBeanServer() {
+        return ManagementFactory.getPlatformMBeanServer();
+    }
+    
 }
