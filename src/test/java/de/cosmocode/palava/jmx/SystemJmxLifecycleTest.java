@@ -19,12 +19,13 @@
 
 package de.cosmocode.palava.jmx;
 
+import java.util.Properties;
+
+import org.junit.Test;
+
 import de.cosmocode.palava.core.CoreConfig;
 import de.cosmocode.palava.core.Framework;
 import de.cosmocode.palava.core.Palava;
-import org.junit.Test;
-
-import java.util.Properties;
 
 public class SystemJmxLifecycleTest {
 	private Properties defaultConfiguration() {

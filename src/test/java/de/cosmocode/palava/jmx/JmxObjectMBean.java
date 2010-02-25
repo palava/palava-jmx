@@ -19,10 +19,6 @@
 
 package de.cosmocode.palava.jmx;
 
-import com.google.inject.Inject;
-import de.cosmocode.palava.core.Service;
-
-import javax.management.*;
 
 public interface JmxObjectMBean {
 	String getWorld();
