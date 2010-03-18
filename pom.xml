@@ -11,7 +11,7 @@
     <version>2.0.6</version>
   </parent>
   <scm>
-    <developerConnection>scm:svn:http://palava.svn.cosmocode.de/palava-jmx/trunk</developerConnection>
+    <developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-jmx/trunk</developerConnection>
   </scm>
   <dependencies>
     <dependency>
