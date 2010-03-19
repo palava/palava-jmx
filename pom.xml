@@ -3,21 +3,21 @@
   <groupId>de.cosmocode.palava</groupId>
   <artifactId>palava-jmx</artifactId>
   <packaging>jar</packaging>
-  <version>1.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <name>Palava JMX</name>
   <parent>
     <artifactId>palava-parent</artifactId>
     <groupId>de.cosmocode.palava</groupId>
-    <version>2.0.6</version>
+    <version>2.0.7</version>
   </parent>
   <scm>
-    <developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-jmx/trunk</developerConnection>
+    <developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-jmx/tags/1.0.1</developerConnection>
   </scm>
   <dependencies>
     <dependency>
       <groupId>de.cosmocode.palava</groupId>
       <artifactId>palava-core</artifactId>
-      <version>2.0.0</version>
+      <version>2.0.1</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
