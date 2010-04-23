@@ -32,7 +32,7 @@ public class SystemJmxLifecycleTest {
 	}
 
 	private Framework startFramework(Properties configuration) {
-		Framework framework = Palava.createFramework(configuration);
+		Framework framework = Palava.newFramework(configuration);
 		framework.start();
 		return framework;
 	}
