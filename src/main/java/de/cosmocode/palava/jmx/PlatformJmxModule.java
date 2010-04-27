@@ -23,9 +23,10 @@ import javax.management.MBeanServer;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 
 /**
- * A {@link Module} for the {@link de.cosmocode.palava.jmx} package.
+ * Binds {@link MBeanServer} to {@link ManagementFactory#getPlatformMBeanServer()}.
  *
  * @author Tobias Sarnowski
  */
@@ -37,6 +38,7 @@ public final class PlatformJmxModule implements Module {
     }
 
     @Provides
+    @Singleton
     MBeanServer getMBeanServer() {
         return ManagementFactory.getPlatformMBeanServer();
     }
