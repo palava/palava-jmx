@@ -24,31 +24,36 @@ import de.cosmocode.palava.core.CoreConfig;
 import de.cosmocode.palava.core.Framework;
 import de.cosmocode.palava.core.Palava;
 
+/**
+ * Tests {@link PlatformJmxModule}.
+ *
+ * @author Willi Schoenborn
+ */
 public class SystemJmxLifecycleTest {
-	private Properties defaultConfiguration() {
-		Properties prop = new Properties();
-		prop.put(CoreConfig.APPLICATION, SystemJmxTestApplication.class.getName());
-		return prop;
-	}
+    
+    private Properties defaultConfiguration() {
+        final Properties prop = new Properties();
+        prop.put(CoreConfig.APPLICATION, SystemJmxTestApplication.class.getName());
+        return prop;
+    }
 
-	private Framework startFramework(Properties configuration) {
-		Framework framework = Palava.newFramework(configuration);
-		framework.start();
-		return framework;
-	}
+    private Framework startFramework(Properties configuration) {
+        final Framework framework = Palava.newFramework(configuration);
+        framework.start();
+        return framework;
+    }
 
-	private void stopFramework(Framework framework) {
-		framework.stop();
-	}
+    private void stopFramework(Framework framework) {
+        framework.stop();
+    }
 
-	/**
-	 * tests the behaviour with the default test application
-	 */
-	@Test
-	public void simpleConfiguration() {
-		Properties conf = defaultConfiguration();
-		Framework f = startFramework(conf);
-
-		stopFramework(f);
-	}
+    /**
+     * Tests the behaviour with the default test application.
+     */
+    @Test
+    public void simpleConfiguration() {
+        final Properties conf = defaultConfiguration();
+        final Framework f = startFramework(conf);
+        stopFramework(f);
+    }
 }

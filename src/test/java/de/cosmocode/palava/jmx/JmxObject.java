@@ -27,6 +27,11 @@ import com.google.inject.Inject;
 import de.cosmocode.palava.core.lifecycle.Disposable;
 import de.cosmocode.palava.core.lifecycle.LifecycleException;
 
+/**
+ * Dummy service.
+ *
+ * @author Willi Schoenborn
+ */
 public class JmxObject implements Disposable, JmxObjectMBean {
     
     private ObjectName mBeanName;
@@ -53,4 +58,5 @@ public class JmxObject implements Disposable, JmxObjectMBean {
             throw new LifecycleException(e);
         }
     }
+    
 }

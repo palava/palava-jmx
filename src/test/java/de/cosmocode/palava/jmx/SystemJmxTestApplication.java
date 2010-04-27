@@ -22,6 +22,11 @@ import com.google.inject.Module;
 import de.cosmocode.palava.core.lifecycle.LifecycleModule;
 import de.cosmocode.palava.core.DefaultRegistryModule;
 
+/**
+ * Test module.
+ *
+ * @author Willi Schoenborn
+ */
 public class SystemJmxTestApplication implements Module {
 
     @Override

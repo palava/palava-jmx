@@ -16,7 +16,18 @@
 
 package de.cosmocode.palava.jmx;
 
-
+/**
+ * Dummy mbean interface for {@link JmxObject}.
+ *
+ * @author Willi Schoenborn
+ */
 public interface JmxObjectMBean {
-	String getWorld();
+    
+    /**
+     * Returns hello world.
+     * 
+     * @return "Hello World!"
+     */
+    String getWorld();
+
 }
