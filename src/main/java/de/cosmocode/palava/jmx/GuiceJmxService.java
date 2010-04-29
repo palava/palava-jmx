@@ -42,7 +42,7 @@ final class GuiceJmxService implements Initializable {
     private String domain;
     
     @Inject
-    public GuiceJmxService(MBeanServer server, @Named("guice.jmx.domain") String domain, Injector injector) {
+    public GuiceJmxService(MBeanServer server, Injector injector) {
         this.server = Preconditions.checkNotNull(server, "MBeanServer");
         this.injector = Preconditions.checkNotNull(injector, "Injector");
     }
