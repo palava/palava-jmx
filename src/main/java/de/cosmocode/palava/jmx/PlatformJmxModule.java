@@ -28,8 +28,10 @@ import com.google.inject.Singleton;
 /**
  * Binds {@link MBeanServer} to {@link ManagementFactory#getPlatformMBeanServer()}.
  *
+ * @deprecated use {@link PlatformMBeanServerModule} instead
  * @author Tobias Sarnowski
  */
+@Deprecated
 public final class PlatformJmxModule implements Module {
 
     @Override
