@@ -16,49 +16,94 @@
 
 package de.cosmocode.palava.jmx;
 
-import com.google.inject.Inject;
-import de.cosmocode.palava.core.lifecycle.Disposable;
-import de.cosmocode.palava.core.lifecycle.Initializable;
-import de.cosmocode.palava.core.lifecycle.LifecycleException;
+import java.util.Hashtable;
+import java.util.Map;
+
+import javax.management.JMException;
+import javax.management.MBeanServer;
+import javax.management.MalformedObjectNameException;
+import javax.management.ObjectName;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.management.*;
-import java.util.Hashtable;
+import com.google.inject.Inject;
+
+import de.cosmocode.palava.core.lifecycle.Disposable;
+import de.cosmocode.palava.core.lifecycle.Initializable;
+import de.cosmocode.palava.core.lifecycle.LifecycleException;
 
 /**
+ * Abstract base class which handles jmx de/registration.
+ *
+ * @deprecated use {@link MBeanService} instead which provides a less invasive way
+ *             to provide optional jmx support
+ * 
+ * @since 1.2
  * @author Tobias Sarnowski
+ * @author Willi Schoenborn
  */
+@Deprecated
 public abstract class MBeanRegistered implements Initializable, Disposable {
-    private final Logger LOG;
+    
+    private final Logger log;
 
     private MBeanServer mBeanServer;
     private ObjectName objectName;
 
-    private static ObjectName newObjectName(Class cls) {
+    public MBeanRegistered(Class<?> cls) {
+        this(cls, newObjectName(cls));
+    }
+
+    public MBeanRegistered(Class<?> cls, String objectName) {
+        this(cls, newObjectName(objectName));
+    }
+
+    public MBeanRegistered(Class<?> cls, String key, String value) {
+        this(cls, newObjectName(cls, key, value));
+    }
+
+    public MBeanRegistered(Class<?> cls, String objectName, String key, String value) {
+        this(cls, newObjectName(objectName, key, value));
+    }
+
+    public MBeanRegistered(Class<?> cls, Hashtable<String, String> keys) {
+        this(cls, newObjectName(cls, keys));
+    }
+
+    public MBeanRegistered(Class<?> cls, String objectName, Hashtable<String, String> keys) {
+        this(cls, newObjectName(objectName, keys));
+    }
+
+    public MBeanRegistered(Class<?> cls, ObjectName objectName) {
+        log = LoggerFactory.getLogger(cls);
+        this.objectName = objectName;
+    }
+
+    private static ObjectName newObjectName(Class<?> cls) {
         return newObjectName(cls, "type", cls.getSimpleName());
     }
 
-    private static ObjectName newObjectName(Class cls, String key, String value) {
-        Hashtable<String,String> keys = new Hashtable<String,String>();
+    private static ObjectName newObjectName(Class<?> cls, String key, String value) {
+        final Map<String, String> keys = new Hashtable<String, String>();
         keys.put(key, value);
         return newObjectName(cls, keys);
     }
 
-    private static ObjectName newObjectName(Class cls, Hashtable<String,String> keys) {
+    private static ObjectName newObjectName(Class<?> cls, Map<String, String> keys) {
         keys.put("type", cls.getSimpleName());
         return newObjectName(cls.getPackage().getName(), keys);
     }
 
     private static ObjectName newObjectName(String domain, String key, String value) {
-        Hashtable<String,String> keys = new Hashtable<String,String>();
+        final Map<String, String> keys = new Hashtable<String, String>();
         keys.put(key, value);
         return newObjectName(domain, keys);
     }
 
-    private static ObjectName newObjectName(String domain, Hashtable<String,String> keys) {
+    private static ObjectName newObjectName(String domain, Map<String, String> keys) {
         try {
-            return new ObjectName(domain, keys);
+            return new ObjectName(domain, new Hashtable<String, String>(keys));
         } catch (MalformedObjectNameException e) {
             throw new IllegalArgumentException(e);
         }
@@ -72,42 +117,6 @@ public abstract class MBeanRegistered implements Initializable, Disposable {
         }
     }
 
-
-
-    public MBeanRegistered(Class cls) {
-        this(cls, newObjectName(cls));
-    }
-
-    public MBeanRegistered(Class cls, String objectName) {
-        this(cls, newObjectName(objectName));
-    }
-
-    public MBeanRegistered(Class cls, String key, String value) {
-        this(cls, newObjectName(cls, key, value));
-    }
-
-    public MBeanRegistered(Class cls, String objectName, String key, String value) {
-        this(cls, newObjectName(objectName, key, value));
-    }
-
-    public MBeanRegistered(Class cls, Hashtable<String,String> keys) {
-        this(cls, newObjectName(cls, keys));
-    }
-
-    public MBeanRegistered(Class cls, String objectName, Hashtable<String, String> keys) {
-        this(cls, newObjectName(objectName, keys));
-    }
-
-    /**
-     * Registers the instance under the given name.
-     * @param cls
-     * @param objectName
-     */
-    public MBeanRegistered(Class cls, ObjectName objectName) {
-        LOG = LoggerFactory.getLogger(cls);
-        this.objectName = objectName;
-    }
-
     @Inject(optional = true)
     public void setMBeanServer(MBeanServer mBeanServer) {
         this.mBeanServer = mBeanServer;
@@ -116,21 +125,21 @@ public abstract class MBeanRegistered implements Initializable, Disposable {
     @Override
     public void initialize() throws LifecycleException {
         if (mBeanServer != null) {
-            LOG.info("Registering MBean {} as {}", this, objectName);
+            log.info("Registering MBean {} as {}", this, objectName);
             try {
                 mBeanServer.registerMBean(this, objectName);
             } catch (JMException e) {
                 throw new LifecycleException(e);
             }
         } else {
-            LOG.trace("No MBeanServer bound; don't activating MBean {}", this);
+            log.trace("No MBeanServer bound; don't activating MBean {}", this);
         }
     }
 
     @Override
     public void dispose() throws LifecycleException {
         if (mBeanServer != null) {
-            LOG.trace("Unregistering MBean {} ({})", this, objectName);
+            log.trace("Unregistering MBean {} ({})", this, objectName);
             try {
                 mBeanServer.unregisterMBean(objectName);
             } catch (JMException e) {

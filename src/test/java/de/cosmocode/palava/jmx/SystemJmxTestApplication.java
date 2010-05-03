@@ -19,8 +19,8 @@ package de.cosmocode.palava.jmx;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 
-import de.cosmocode.palava.core.lifecycle.LifecycleModule;
 import de.cosmocode.palava.core.DefaultRegistryModule;
+import de.cosmocode.palava.core.lifecycle.LifecycleModule;
 
 /**
  * Test module.
@@ -33,7 +33,7 @@ public class SystemJmxTestApplication implements Module {
     public void configure(Binder binder) {
         binder.install(new LifecycleModule());
         binder.install(new DefaultRegistryModule());
-        binder.install(new PlatformJmxModule());
+        binder.install(new PlatformMBeanServerModule());
     }
 
 }
