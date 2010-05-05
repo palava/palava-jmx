@@ -35,6 +35,7 @@ import com.google.inject.internal.Maps;
  * to the actual {@link MBeanServer}.
  *
  * @author Willi Schoenborn
+ * @author Tobias Sarnowski
  */
 final class DefaultMBeanService extends ForwardingMBeanServer implements MBeanService {
 
@@ -63,6 +64,7 @@ final class DefaultMBeanService extends ForwardingMBeanServer implements MBeanSe
         Preconditions.checkNotNull(bean, "Bean");
         Preconditions.checkNotNull(key, "Key");
         final Map<String, String> table = Maps.newHashMap();
+        table.put("type", bean.getClass().getSimpleName());
         table.put(key, value);
         register(bean, table);
     }
@@ -73,6 +75,7 @@ final class DefaultMBeanService extends ForwardingMBeanServer implements MBeanSe
         Preconditions.checkNotNull(table, "Table");
         try {
             final String domain = bean.getClass().getPackage().getName();
+            table.put("type", bean.getClass().getSimpleName());
             final ObjectName name = new ObjectName(domain, new Hashtable<String, String>(table));
             LOG.info("Registering MBean {} as {}", bean, name);
             server.registerMBean(bean, name);
@@ -92,6 +95,7 @@ final class DefaultMBeanService extends ForwardingMBeanServer implements MBeanSe
         Preconditions.checkNotNull(bean, "Bean");
         Preconditions.checkNotNull(key, "Key");
         final Map<String, String> table = Maps.newHashMap();
+        table.put("type", bean.getClass().getSimpleName());
         table.put(key, value);
         unregister(bean, table);
     }
@@ -102,6 +106,7 @@ final class DefaultMBeanService extends ForwardingMBeanServer implements MBeanSe
         Preconditions.checkNotNull(table, "Table");
         try {
             final String domain = bean.getClass().getPackage().getName();
+            table.put("type", bean.getClass().getSimpleName());
             final ObjectName name = new ObjectName(domain, new Hashtable<String, String>(table));
             LOG.trace("Unregistering MBean {} ({})", bean, name);
             server.unregisterMBean(name);
