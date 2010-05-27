@@ -8,10 +8,10 @@
   <name>Palava JMX</name>
   <groupId>de.cosmocode.palava</groupId>
   <artifactId>palava-jmx</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2.0</version>
   <packaging>jar</packaging>
   <scm>
-    <developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-jmx/trunk</developerConnection>
+    <developerConnection>scm:svn:https://palava.svn.cosmocode.de/palava-jmx/tags/1.2.0</developerConnection>
   </scm>
   <dependencies>
     <dependency>
