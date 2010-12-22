@@ -44,6 +44,7 @@ public class JmxObject implements Disposable, JmxObjectMBean {
         mBeanServer.registerMBean(this, mBeanName);
     }
 
+    @Override
     public String getWorld() {
         return "Hello World!";
     }
